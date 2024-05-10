@@ -16,6 +16,7 @@ export const sendPostRequest = async (address) => {
         .catch(function (error) {
             alert("POST 요청 전송 중 오류가 발생했습니다.");
             console.error(error);
+            clearLocalStorageAndRefresh();
         });
 };
 
@@ -34,6 +35,7 @@ export const sendPostRequest1 = async (addrKey) => {
         .catch(function (error) {
             alert("POST 요청 전송 중 오류가 발생했습니다.");
             console.error(error);
+            clearLocalStorageAndRefresh();
         });
 };
 
@@ -51,6 +53,7 @@ export const sendPostRequest2 = async (dongKey) => {
         .catch(function (error) {
             alert("POST 요청 전송 중 오류가 발생했습니다.");
             console.error(error);
+            clearLocalStorageAndRefresh();
         });
 };
 
@@ -91,5 +94,12 @@ export const sendPostRequest3 = async (hokey) => {
         .catch(function (error) {
             alert("POST 요청 전송 중 오류가 발생했습니다.");
             console.error(error);
+            clearLocalStorageAndRefresh();
         });
 };
+
+// LocalStorage 데이터를 삭제하고 페이지를 새로고침하는 함수
+function clearLocalStorageAndRefresh() {
+    // localStorage.clear();
+    // window.location.reload();
+}
