@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 import './styles/App.css'; // CSS 파일 임포트
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Form from 'react-bootstrap/Form';
-import Button from 'react-bootstrap/Button';
 import PdfViewer from './pdfViewers.js';
 import { sendPostRequest, sendPostRequest1, sendPostRequest2, sendPostRequest3 } from './request.js';
 
@@ -21,9 +20,12 @@ function App() {
 
   const [pdfHex, setpdfHex] = useState("");
 
+  const [showSearch, setShowSearch] = useState(true); // 추가된 상태
+
   // 주소 입력 시 세움터 로그인하고 주소 검색해주는 함수
   let handleAddressSearch = () => {
     console.log(address);
+    setShowSearch(false) // 검색 수행 시 검색 바와 버튼 숨기기
 
     sendPostRequest(address).then(() => {
       const addrData = localStorage.getItem('addrObj');
@@ -54,7 +56,9 @@ function App() {
               <h3>원하는 위치와 조건을 검색해 보세요.</h3>
             </hgroup>
             <p>아래 검색 창에 원하는 조건을 입력하고 검색 버튼을 클릭하세요.</p>
-            <주소입력창 setAddress={setAddress} handleAddressSearch={handleAddressSearch} />
+            {/* {showSearch && ( */}
+              <주소입력창 setAddress={setAddress} handleAddressSearch={handleAddressSearch} showSearch={showSearch} />
+            {/* )}  */}
             {addrObj && <주소선택창 addrObj={addrObj} addrkey={addrkey} setAddrkey={setAddrkey} setDongObj={setDongObj} />}
             {dongObj && <동선택창 dongObj={dongObj} dongkey={dongkey} setDongkey={setDongkey} setHoObj={setHoObj}/>}
             {hoObj && <호선택창 hoObj={hoObj} hokey={hokey} setHokey={setHokey} setpdfHex={setpdfHex} />}
@@ -71,18 +75,19 @@ function App() {
   );
 }
 
-function 주소입력창({ setAddress, handleAddressSearch }) {
+function 주소입력창({ setAddress, handleAddressSearch, showSearch }) {
   return (
-    <div>
-      <form action="#" method="get">
+    <div className={`search-container ${!showSearch ? "hide-search" : ""}`}>
+      <form action="#" method="get" onSubmit={(e) => e.preventDefault()}>
         <input type="text" id="search" name="search" placeholder="주소를 입력하고 '주소검색' 버튼을 누르세요." aria-label="검색어" required
-         onChange={(e) => setAddress(e.target.value)} // 입력 값에 따라 주소 상태 업데이트 
+          onChange={(e) => setAddress(e.target.value)} 
         />
-        <button type="submit" onClick={() => handleAddressSearch()}>검색</button>
+        <button type="button" onClick={handleAddressSearch}>검색</button>
       </form>
     </div>
   );
 }
+
 
 function 주소선택창({ addrObj, addrkey, setAddrkey, setDongObj }) {
 
